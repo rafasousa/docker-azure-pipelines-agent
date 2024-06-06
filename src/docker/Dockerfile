@@ -33,7 +33,7 @@ RUN curl -fSsL https://deb.nodesource.com/setup_20.x | bash
 RUN apt-get install -y nodejs
 
 RUN curl -fSso- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-RUN [ "/bin/bash", "-c", "source $HOME/.nvm/nvm.sh && nvm i 14 && nvm i 16 && nvm i 18 && nvm i 20" ]
+RUN [ "/bin/bash", "-c", "source $HOME/.nvm/nvm.sh && nvm i 18 && nvm i 20" ]
 RUN [ "/bin/bash", "-c", "source $HOME/.nvm/nvm.sh && nvm alias default 20" ]
 
 # terraform:
