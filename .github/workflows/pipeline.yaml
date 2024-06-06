@@ -15,35 +15,13 @@ env:
   imageRepository: "emberstack/azure-pipelines-agent"
   DOCKER_CLI_EXPERIMENTAL: "enabled"
 
-
 jobs:
   ci:
     name: CI
     runs-on: ubuntu-latest
     steps:
-
-      - name: tools - helm - install
-        uses: azure/setup-helm@v1
-
-
-
-      - name: artifacts - prepare directories
-        run: mkdir -p .artifacts/helm
-
       - name: checkout
         uses: actions/checkout@v2
-
-      - name: helm - import README
-        run: cp README.md src/helm/azure-pipelines-agent/README.md
-
-      - name: helm - template chart
-        run: helm package --destination .artifacts/helm --version ${{env.version}} --app-version ${{env.version}} src/helm/azure-pipelines-agent
-
-      - name: "artifacts - upload - helm chart"
-        uses: actions/upload-artifact@v2
-        with:
-          name: helm
-          path: .artifacts/helm
 
       - name: "docker - build"
         run: |
@@ -77,20 +55,11 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: tools - helm - install
-        uses: azure/setup-helm@v1
-
       - name: tools - docker - login
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.ES_DOCKERHUB_USERNAME }}
           password: ${{ secrets.ES_DOCKERHUB_PAT }}
-
-      - name: artifacts - download - helm chart
-        uses: actions/download-artifact@v2
-        with:
-          name: helm
-          path: .artifacts/helm
 
       - name: "docker - tag and push"
         run: |
@@ -109,36 +78,11 @@ jobs:
           docker push ${{env.imageRepository}}:${{env.version}}-amd64
           docker push ${{env.imageRepository}}:${{env.version}}-arm32v7
           docker push ${{env.imageRepository}}:${{env.version}}-arm64v8
-
-
-      - name: github - checkout - helm-charts
-        uses: actions/checkout@v2
-        with:
-          repository: emberstack/helm-charts
-          token:  ${{ secrets.ES_GITHUB_PAT }}
-          path: helm-charts
-
-
-      - name: github - publish - chart
-        run: |
-          mkdir -p helm-charts/charts
-          cp .artifacts/helm/azure-pipelines-agent-${{env.version}}.tgz  helm-charts/charts
-
-          cd helm-charts
-          rm -f index.yaml
-          helm repo index ./
-
-          git config user.name "Romeo Dumitrescu"
-          git config user.email "5931333+winromulus@users.noreply.github.com"
-          git add .
-          git status
-          git commit -m "Added azure-pipelines-agent-${{env.version}}.tgz"
-          git push
-
-      - name: github - create release
-        uses: softprops/action-gh-release@v1
-        with:
-          repository: emberstack/docker-azure-pipelines-agent
-          tag_name: v${{env.version}}
-          body: The release process is automated.
-          token: ${{ secrets.ES_GITHUB_PAT }}
+      
+      # - name: github - create release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     repository: emberstack/docker-azure-pipelines-agent
+      #     tag_name: v${{env.version}}
+      #     body: The release process is automated.
+      #     token: ${{ secrets.ES_GITHUB_PAT }}
