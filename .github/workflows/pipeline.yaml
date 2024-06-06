@@ -12,7 +12,7 @@ on:
 
 env:
   version: 2.2.${{github.run_number}}
-  imageRepository: "emberstack/azure-pipelines-agent"
+  imageRepository: "rafasousa/azure-pipelines-agent"
   DOCKER_CLI_EXPERIMENTAL: "enabled"
 
 jobs:
