@@ -17,7 +17,8 @@ RUN apt-get update \
         libunwind8 \
         netcat \
         libssl1.0 \
-        libuuid1 \ gdebi-core \
+        libuuid1 \ 
+        gdebi-core \
         build-essential \
         libssl-dev \
         wget \
