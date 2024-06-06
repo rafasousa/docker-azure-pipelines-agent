@@ -7,8 +7,7 @@ on:
       - ".github/workflows/**"
   pull_request:
     paths:
-      - "src/**"
-      - ".github/workflows/**"
+      - "src/**":latest
 
 env:
   version: 2.2.${{github.run_number}}
@@ -79,10 +78,10 @@ jobs:
           docker push ${{env.imageRepository}}:${{env.version}}-arm32v7
           docker push ${{env.imageRepository}}:${{env.version}}-arm64v8
       
-      # - name: github - create release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     repository: emberstack/docker-azure-pipelines-agent
-      #     tag_name: v${{env.version}}
-      #     body: The release process is automated.
-      #     token: ${{ secrets.ES_GITHUB_PAT }}
+      - name: github - create release
+        uses: softprops/action-gh-release@v1
+        with:
+          repository: rafasousa/docker-azure-pipelines-agent
+          tag_name: v${{env.version}}
+          body: The release process is automated.
+          token: ${{ secrets.ES_GITHUB_PAT }}
