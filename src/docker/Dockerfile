@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:20.04
 
 # To make it easier for build and release pipelines to run apt-get,
 # configure apt to not require confirmation (assume the -y argument by default)
