@@ -28,6 +28,7 @@ RUN apt-get update \
         wget \
         zip \
         unzip \
+        gettext \
 && rm -rf /var/lib/apt/lists/*
 
 # nvm/node:
