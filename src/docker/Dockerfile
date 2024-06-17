@@ -31,6 +31,10 @@ RUN apt-get update \
         gettext \
 && rm -rf /var/lib/apt/lists/*
 
+# envsubst:
+RUN apt-get update \
+&& apt-get install -y gettext-base
+
 # nvm/node:
 RUN curl -fSsL https://deb.nodesource.com/setup_20.x | bash
 RUN apt install nodejs
